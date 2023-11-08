@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<launch>
+  
+  <!-- Define an argument for the Xacro file -->
+  <arg name="beginner_tutorials" default="$(find beginner_tutorials)/description/robot.urdf.xacro"/>
+  
+  <!-- Load the URDF description using Xacro -->
+  <param name="robot_description" command="$(find xacro)/xacro '$(arg beginner_tutorials)'"/>
+  
+  <!-- Start the robot_state_publisher node -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+  
+  <!-- Include the Gazebo empty world launch file -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="use_sim_time" value="true"/>
+    <arg name="gui" value="true"/>
+    <arg name="verbose" value="false"/>
+    <arg name="debug" value="false"/>
+  </include>
+  
+  <!-- Spawn the URDF model in Gazebo -->
+  <node name="spawning_urdf" pkg="gazebo_ros" type="spawn_model" args="-urdf -model sample_rover -param robot_description"/>
+  
+</launch>

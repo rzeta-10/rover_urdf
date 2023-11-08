@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<launch>
+
+  <!-- <arg name="multipleshapes" default="$(find service_node)/urdf/cylinder.urdf"/> -->
+  <arg name="beginner_tutorials" default="$(find beginner_tutorials)/description/rover.urdf.xacro"/>
+  <!-- <arg name="gui" default="true" /> -->
+  <arg name="gui" default="true" /> <!-- Modify the GUI argument as needed -->
+  <!-- <arg name="rvizconfig" default="$(find urdf_tutorial)/rviz/urdf.rviz" /> -->
+  <arg name="rvizconfig" default="$(find beginner_tutorials)/rviz/bot.rviz" />
+
+  <param name="robot_description" command="$(find xacro)/xacro '$(find beginner_tutorials)/description/robot.urdf.xacro'"/>
+  <!-- Use the new URDF file -->
+
+
+  <node if="$(arg gui)" name="joint_state_publisher" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui" />
+  <node unless="$(arg gui)" name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)" required="true" />
+
+</launch>
